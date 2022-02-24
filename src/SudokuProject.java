@@ -1,28 +1,21 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class SudokuProject{
     int[][] puzzle;
 
     //Constructor
-    public SudokuProject(){
-        int[][] sudokuPuzzle = {
-            {3, 0, 6, 5, 0, 8, 4, 0, 0},
-            {5, 2, 0, 0, 0, 0, 0, 0, 0},
-            {0, 8, 7, 0, 0, 0, 0, 3, 1},
-            {0, 0, 3, 0, 1, 0, 0, 8, 0},
-            {9, 0, 0, 8, 6, 3, 0, 0, 5},
-            {0, 5, 0, 0, 9, 0, 6, 0, 0},
-            {1, 3, 0, 0, 0, 0, 2, 5, 0},
-            {0, 0, 0, 0, 0, 0, 0, 7, 4},
-            {0, 0, 5, 2, 0, 6, 3, 0, 0}
-        };
-
+    public SudokuProject(int[][] sudokuPuzzle){
         puzzle = new int[9][9];
         puzzle = sudokuPuzzle;
 
         for(int[] x : puzzle)
         if(sudokuSolver()){
-            System.out.println(Arrays.toString(x)); 
+            System.out.println(Arrays.toString(x));  
         }else{
            System.out.println("No Solution");
         }
@@ -86,7 +79,46 @@ public class SudokuProject{
     }
 
     //Main Method
-    public static void main(String[] args){
-       new SudokuProject();
+    public static void main(String[] args) throws FileNotFoundException{
+        Scanner scan = new Scanner(new File("p096_sudoku.txt"));
+        String num = "";
+        List<String> grids = new ArrayList<>();
+        int gridCount = 0;
+        while(scan.hasNextLine()){
+            num = scan.nextLine();
+            if(!num.contains("Grid"))
+                grids.add(num);
+            else
+                gridCount++;
+
+        }
+
+        List<Integer> singleNum = new ArrayList<>();
+        for(int i = 0; i < grids.size(); i++)
+            for(int j = 0; j < 9; j++)
+                singleNum.add(Integer.parseInt(grids.get(i).substring(j, j+1)));
+
+        //System.out.println(singleNum);
+        
+        int[][] sudoku = new int[9][9];
+
+        //for(int[] x : sudoku)
+          //  System.out.println(Arrays.toString(x));
+        for(int i = 0; i < gridCount; i++){
+            int count = 0;
+            for(int r = 0; r < sudoku[0].length; r++){
+                for(int c = 0; c < sudoku.length; c++){
+                    sudoku[r][c] = singleNum.get(count);
+                    count++;
+                }
+            }
+            for(int j = 0; j < 81; j++)
+                System.out.print(singleNum.remove(j));
+
+            System.out.println("\n");
+
+            //System.out.println("Grid " + (i+1));
+            //new SudokuProject(sudoku);
+        }
     }
 }
