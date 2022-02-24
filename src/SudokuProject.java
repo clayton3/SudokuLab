@@ -8,17 +8,46 @@ import java.util.Scanner;
 public class SudokuProject{
     int[][] puzzle;
 
-    //Constructor
-    public SudokuProject(int[][] sudokuPuzzle){
+    public SudokuProject(){
         puzzle = new int[9][9];
-        puzzle = sudokuPuzzle;
+    }
+
+    public SudokuProject(int[][] puzzle){
+        this.puzzle = puzzle;
 
         for(int[] x : puzzle)
-        if(sudokuSolver()){
+        if(sudokuSolver())
             System.out.println(Arrays.toString(x));  
-        }else{
+        else
            System.out.println("No Solution");
+    }
+
+    //Constructor
+    public SudokuProject(List<String> grids, int gridCount){
+        puzzle = new int[9][9];
+        int sum = 0;
+
+        for(int i = 0; i < gridCount; i++){
+            int[][] sudoku = new int[9][9];
+            int count = 0;
+            for(int r = 0; r < sudoku[0].length; r++){
+                for(int c = 0; c < sudoku.length; c++){
+                    sudoku[r][c] = Integer.parseInt(grids.get(count).substring(c, c+1));
+                }
+                count++;
+            }
+
+            for(int j = 0; j < 9; j++){
+                if(grids.size() > 9)
+                    grids.remove(j);
+            }
+
+            puzzle = sudoku;
+
+            if(sudokuSolver());
+                sum += Integer.parseInt("" + puzzle[0][0] + puzzle[0][1] + puzzle[0][2]); 
         }
+        System.out.println(sum);
     }
 
     public boolean sudokuSolver(){
@@ -33,7 +62,7 @@ public class SudokuProject{
                             puzzle[r][c] = 0;
                         }
                     }
-                return false;
+                    return false;
                 }
             }
         }
@@ -92,33 +121,21 @@ public class SudokuProject{
                 gridCount++;
 
         }
+        scan.close();
 
-        List<Integer> singleNum = new ArrayList<>();
-        for(int i = 0; i < grids.size(); i++)
-            for(int j = 0; j < 9; j++)
-                singleNum.add(Integer.parseInt(grids.get(i).substring(j, j+1)));
+        int[][] sudokuPuzzle = {
+            {3, 0, 6, 5, 0, 8, 4, 0, 0},
+            {5, 2, 0, 0, 0, 0, 0, 0, 0},
+            {0, 8, 7, 0, 0, 0, 0, 3, 1},
+            {0, 0, 3, 0, 1, 0, 0, 8, 0},
+            {9, 0, 0, 8, 6, 3, 0, 0, 5},
+            {0, 5, 0, 0, 9, 0, 6, 0, 0},
+            {1, 3, 0, 0, 0, 0, 2, 5, 0},
+            {0, 0, 0, 0, 0, 0, 0, 7, 4},
+            {0, 0, 5, 2, 0, 6, 3, 0, 0}
+        };
 
-        //System.out.println(singleNum);
-        
-        int[][] sudoku = new int[9][9];
-
-        //for(int[] x : sudoku)
-          //  System.out.println(Arrays.toString(x));
-        for(int i = 0; i < gridCount; i++){
-            int count = 0;
-            for(int r = 0; r < sudoku[0].length; r++){
-                for(int c = 0; c < sudoku.length; c++){
-                    sudoku[r][c] = singleNum.get(count);
-                    count++;
-                }
-            }
-            for(int j = 0; j < 81; j++)
-                System.out.print(singleNum.remove(j));
-
-            System.out.println("\n");
-
-            //System.out.println("Grid " + (i+1));
-            //new SudokuProject(sudoku);
-        }
+        new SudokuProject(grids, gridCount);
+        //new SudokuProject(sudokuPuzzle);
     }
 }
