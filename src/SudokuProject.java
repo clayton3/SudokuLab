@@ -26,6 +26,7 @@ public class SudokuProject{
     public SudokuProject(List<String> grids, int gridCount){
         puzzle = new int[9][9];
         int sum = 0;
+        int acount = 0;
 
         for(int i = 0; i < gridCount; i++){
             int[][] sudoku = new int[9][9];
@@ -44,10 +45,15 @@ public class SudokuProject{
 
             puzzle = sudoku;
 
-            if(sudokuSolver());
-                sum += Integer.parseInt("" + puzzle[0][0] + puzzle[0][1] + puzzle[0][2]); 
+            System.out.println("Grid " + (acount+1));
+            for(int[] x : puzzle)
+                System.out.println(Arrays.toString(x));
+            acount++;
+
+            //if(sudokuSolver());
+             //   sum += Integer.parseInt("" + puzzle[0][0] + puzzle[0][1] + puzzle[0][2]); 
         }
-        System.out.println(sum);
+        //System.out.println(sum);
     }
 
     public boolean sudokuSolver(){
@@ -135,7 +141,7 @@ public class SudokuProject{
             {0, 0, 5, 2, 0, 6, 3, 0, 0}
         };
 
-        new SudokuProject(grids, gridCount);
-        //new SudokuProject(sudokuPuzzle);
+        //new SudokuProject(grids, gridCount);
+        new SudokuProject(sudokuPuzzle);
     }
 }
